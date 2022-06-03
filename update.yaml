@@ -1,6 +1,6 @@
 ---
 - name: All hosts up-to-date
-  hosts: control managed
+  hosts: all
   become: yes
 
   tasks:
