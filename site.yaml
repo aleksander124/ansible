@@ -7,8 +7,8 @@
   # become_method: sudo
 
   roles:
-    - common
-    - mysql
-    - nginx
-    - php-fpm
-    - wordpress
+  - common
+  - mysql
+  - nginx
+  - php-fpm
+  - wordpress
