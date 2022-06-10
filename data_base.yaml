@@ -33,5 +33,3 @@
       name: mariadb
       enabled: true
       state: started
-
-  
