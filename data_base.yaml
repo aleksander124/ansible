@@ -1,0 +1,37 @@
+---
+- name: Installation Mariadb for apache server
+  hosts: db 
+  become: yes
+  gather_facts: true
+  tasks:
+
+  - name: install pip3
+    dnf: name=python3-pip state=present 
+
+  - name: isntall Mariadb
+    dnf:
+      name:
+      - mariadb-server
+      - python3
+      - git
+      - wget
+      state: latest
+
+  - name: Make sure pymysql is present
+    become: true # needed if the other tasks are not played as root
+    pip:
+     name: pymysql
+     state: present
+
+  - name: Install pymysql
+    become: true
+    pip:
+      name: pymysql
+
+  - name: Start Mariadb
+    service:
+      name: mariadb
+      enabled: true
+      state: started
+
+  
