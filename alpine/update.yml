@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  
+  tasks:
+  - name: update all packages
+    raw: /sbin/apk upgrade -U -a
+
+  - name: reboot the system
+    raw: /sbin/reboot -d 5 

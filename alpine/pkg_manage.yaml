@@ -1,0 +1,31 @@
+---
+- hosts: all
+  # become: true
+  # become_user: root
+  gather_facts: false
+  vars: 
+    - user: ansible
+    - password: ansible
+  tasks:  
+
+  - name: install packeges
+    community.general.apk:
+      name: git, nano
+      update_cache: yes
+      state: present
+
+  - name: Create a login user
+    user: 
+      name: "{{ user}}"
+      password: "{{ password }}"
+      groups:
+        - wheel
+      state: present
+
+  
+  - name: Add {{ user }} to sudoers file
+    ansible.builtin.lineinfile:
+      path: /etc/sudoers
+      regexp: '^{{ user }}'
+      line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'

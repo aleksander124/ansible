@@ -1,5 +1,5 @@
 ---
-- hosts: linux
+- hosts: test
   become: true
   strategy: free
   tasks: 
