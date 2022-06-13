@@ -1,0 +1,43 @@
+---
+- name: Create user on a linux server
+  hosts: remote-server
+  become: yes
+  gather_facts: false
+  vars:
+    - user: ansible
+    - password: $6$8IAGh7Gu2ugAB.sF$zHldDAEBMoiFUPq2RsGpQ.TRwbPOz3/S5ATs5TbfWDLypYjLGfKN8SNxu1Sx5nNfzQgDJqBh37jT9ln7EIHcq0
+  tasks:
+      - name: Create a login user
+        user:
+          name: "{{ user }}"
+          password: "{{ password }}"
+          groups:
+            - wheel
+          state: present
+
+      - name: Add public key to authorized_keys
+        authorized_key:
+          user: "{{ user }}"
+          state: present
+          key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+      - name: Deny root from logging in
+        ansible.builtin.lineinfile:
+          dest: /etc/ssh/sshd_config
+          regexp: '^(#)?PermitRootLogin \w*$'
+          line: 'PermitRootLogin no'
+          state: present
+
+      - name: Allow specific users to log in
+        ansible.builtin.lineinfile:
+          dest: /etc/ssh/sshd_config
+          regexp: '^AllowUsers'
+          line: 'AllowUsers {{ user }}'
+          state: present
+
+      - name: Add {{ user }} to sudoers file
+        ansible.builtin.lineinfile:
+          path: /etc/sudoers
+          regexp: '^{{ user }}'
+          line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
+          validate: 'visudo -cf %s'
