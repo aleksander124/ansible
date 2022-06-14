@@ -3,7 +3,7 @@
   hosts: linux
   become: true
   vars:
-    templateSource: '/mnt/c/Users/Ubuntu/Ansible/tamplates/index.html'
+    templateSource: '/mnt/c/Users/Ubuntu/Ansible/tamplates/index.j2'
   tasks: 
   
   - name: Installation http 
