@@ -3,7 +3,7 @@
         <pre>
         Ansible Node: {{ ansible_nodename }}
         FQDN: {{ ansible_fqdn }} 
-        IP Address: {{ ansible_eth0.ipv4.address }}        
+        IP Address: {{ ansible_default_ipv4.address }}   
         Distribution: {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}
         Kernel: {{ ansible_kernel }} 
         Python Version: {{ ansible_python_version }}
