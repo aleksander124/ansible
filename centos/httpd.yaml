@@ -1,0 +1,38 @@
+---
+- name: Install httpd and open firewall port
+  hosts: linux
+  become: true
+  vars:
+    templateSource: '/mnt/c/Users/Ubuntu/Ansible/tamplates/index.html'
+  tasks: 
+  
+  - name: Installation http 
+    yum:
+      name: httpd
+      state: present
+  - name: open firewall port
+    firewalld:
+      service: http
+      zone: public
+      immediate: yes # this is the firewall-cmd --reload
+      permanent: true
+      state: enabled
+
+  - name: httpd template for index.html
+    template:
+      src: "{{ templateSource }}"
+      dest: /var/www/html/index.html
+      owner: root
+      mode: 0644
+    notify: restart httpd
+  
+  - name: Ensure apache is running
+    ansible.builtin.service:
+      name: httpd
+      state: started
+
+  handlers: 
+  - name: restart httpd
+    ansible.builtin.service:
+      name: httpd
+      state: restarted
