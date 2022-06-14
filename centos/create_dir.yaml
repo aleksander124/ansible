@@ -1,0 +1,12 @@
+---
+- name: Create directory
+  hosts: linux
+  become: true
+  tasks:
+  - name: add a directory
+    file:
+      owner: ansible
+      mode: 0755
+      recurse: yes
+      path: /home/ansible/new_directory
+      state: directory

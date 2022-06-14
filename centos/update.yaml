@@ -1,0 +1,29 @@
+---
+- name: Update packages
+  hosts: linux
+  become: yes
+  tasks:
+  
+  - name: install updates using yum
+    yum:
+      name: "*"
+      state: latest
+
+  - name: isntall yum-utils
+    yum:
+      name: yum-utils
+      state: latest
+
+  - name: install require aps (optional)
+    yum:
+      name: 
+        - git
+        - python3
+        - docker
+      state: latest
+
+  - name: Reboot hosts
+    reboot: 
+      connect_timeout: "5"
+      post_reboot_delay: "15"
+      reboot_timeout: "600"
